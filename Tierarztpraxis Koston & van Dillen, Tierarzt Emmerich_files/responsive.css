@@ -1,0 +1,41 @@
+@charset "utf-8";@media only screen and (min-width:1024px) and (max-width:1250px){.center_wrapper{width:90%}
+.content_main_dho{-webkit-width:calc(100% - 250px);-moz-width:calc(100% - 250px);width:calc(100% - 250px)}
+.footer_wrapper{padding:45px 20px}
+.navigation_wrapper>ul{padding:0 0 0 270px;margin:0}
+}
+@media only screen and (min-width:768px) and (max-width:1023px){.cm-template-title--container-cm-empty{margin-top:160px}
+.center_wrapper{width:90%}
+.content_main_dho{-webkit-width:calc(100% - 250px);-moz-width:calc(100% - 250px);width:calc(100% - 250px)}
+.footer_wrapper{padding:45px 20px}
+.scrollup{padding-right:inherit;display:block;margin-top:0;position:relative;text-align:center;right:auto;padding:20px 0}
+.scrollup a{box-shadow:0 0 5px #000}
+.head_wrapper{position:absolute;top:0;width:100%}
+.toggle_navigation{display:none}
+.logo_wrapper{position:relative;width:100%;margin:30px auto}
+#logo{margin:0 auto;width:190px;height:190px;background-position:center !important}
+.cm-templates-logo-deprecated-px{background-size:contain}
+.navigation_wrapper{margin-top:100px;width:100%}
+.navigation_wrapper>ul{width:100%;padding:0;text-align:center}
+.navigation_wrapper>ul>li>ul>li>a{text-align:left}
+.navigation_wrapper>ul>li>ul>li>ul>li>a{text-align:left}
+}
+@media only screen and (min-width:1px) and (max-width:767px){.cm-template-title--container-cm-empty{margin-top:160px}
+.center_wrapper{width:90%}
+.content_main_dho{display:block;width:100%}
+.sidebar_wrapper{display:block;width:calc(100% - 20px);padding:25px 10px;margin:10px 0 0}
+.sidebar_wrapper:after{display:none}
+.footer_wrapper{padding:45px 20px}
+.scrollup{padding-right:inherit;display:block;margin-top:0;position:relative;text-align:center;right:auto;padding:20px 0}
+.scrollup a{box-shadow:0 0 5px #000}
+.head_wrapper{position:absolute;top:0;width:100%;height:500px}
+.toggle_navigation{display:none}
+.logo_wrapper{position:relative;width:100%;margin:30px auto}
+#logo{margin:0 auto;width:190px;height:190px;background-position:center !important}
+.cm-templates-logo-deprecated-px{background-size:contain}
+.navigation_wrapper{margin-top:auto;width:100%;position:absolute;bottom:0}
+.navigation_wrapper>ul{width:100%;padding:0;text-align:center}
+.navigation_wrapper>ul>li>ul{display:none}
+.navigation_wrapper>ul>li>ul>li>a{text-align:left}
+.navigation_wrapper>ul>li:hover>ul{display:block}
+.navigation_wrapper>ul>li>ul>li>ul>li>a{text-align:left}
+}

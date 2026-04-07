@@ -1,0 +1,8 @@
+if(!document.body.classList.contains('cm-edit')) {
+  window.addEventListener('scroll', function(e) {
+    var selectorKV = document.querySelector('#keyvisual'),
+        scroll = window.pageYOffset,
+        num = ((scroll * 0.563) * 1);
+    selectorKV.setAttribute('style','transform: translate3d(0px, ' + num + 'px , 0px); ');
+  });
+}

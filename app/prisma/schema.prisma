@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Buchungstypen (z.B. "Impfung", "Allgemeine Untersuchung")
+model AppointmentType {
+  id          Int           @id @default(autoincrement())
+  name        String        // z.B. "Impfung", "Kastration", "Check-up"
+  durationMin Int           @default(30) // Dauer in Minuten
+  active      Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  appointments Appointment[]
+}
+
+// Wöchentliche Verfügbarkeits-Einstellungen
+model AvailabilityRule {
+  id        Int     @id @default(autoincrement())
+  dayOfWeek Int     // 0=Sonntag, 1=Montag, ... 6=Samstag
+  startTime String  // "09:00"
+  endTime   String  // "17:00"
+  active    Boolean @default(true)
+}
+
+// Geblockte Tage (z.B. Urlaub, Feiertage)
+model BlockedDate {
+  id     Int      @id @default(autoincrement())
+  date   DateTime
+  reason String?
+}
+
+// Gebuchte Termine
+model Appointment {
+  id              Int             @id @default(autoincrement())
+  date            DateTime        // Datum + Uhrzeit des Termins
+  ownerName       String          // Name des Tierbesitzers
+  ownerPhone      String          // Telefonnummer
+  ownerEmail      String?         // E-Mail optional
+  petName         String          // Name des Tieres
+  petType         String          // "Hund", "Katze", "Kaninchen", etc.
+  notes           String?         // Zusätzliche Anmerkungen
+  status          String          @default("pending") // "pending", "confirmed", "cancelled"
+  createdAt       DateTime        @default(now())
+  appointmentType AppointmentType @relation(fields: [typeId], references: [id])
+  typeId          Int
+}
+
+// Fortbildungen (für die Über Uns Seite)
+model Education {
+  id        Int      @id @default(autoincrement())
+  title     String   // Titel der Fortbildung
+  date      String   // "01/2025" oder "09/2023"
+  doctor    String   // "Florian Koston" oder "Kerstin van Dillen"
+  category  String   @default("Allgemein") // "Zahnheilkunde", "Chirurgie", etc.
+  active    Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+}

@@ -1,0 +1,167 @@
+/*** +**/
+function checknaviHeight() {
+	if (jQuery('#keyvisual').hasClass('cm_empty')) {
+		jQuery('.title_wrapper').addClass('cm-template-title--container-cm-empty');
+	} else {
+		jQuery('.title_wrapper').removeClass('cm-template-title--container-cm-empty');
+	}
+}
+
+jQuery(document).ready(function () {
+	//Activates the double-click function on the first navigation level - mobil
+
+	// get current user agent
+	var userAgent = navigator.userAgent.toLowerCase();
+	// if android exits index > -1 will be returned
+	var isAndroid = userAgent.indexOf("android") > -1;
+	// if isAndroid == true then our double tab script will be executed
+	if (isAndroid === true && navigator.maxTouchPoints > 0) {
+		Common.doubleTapToGo(".navigation_wrapper li:has(ul)");
+		Common.doubleTapToGo(".navigation_wrapper li:has(ul) .cm_has_subnavigation:has(ul)");
+	}
+
+	// This feature hides elements on the web page
+	//1. elements - 2. hiddenElements - 3. switchVariable - 4.  - 5. cssAttribute - 6. cssValue - 7. cssClass
+	function setCmEmptyForElements(elements, hiddenElement, switchVariable, cssAttribute, cssClass) {
+
+		//check is parameter empty 
+		function varIsEmpty(vars) {
+			return (vars !== undefined || vars !== null || vars !== '') ? true : false;
+		}
+
+		function elementsAddClass(elements) {
+			jQuery(elements).addClass('cm-templates-empty');
+		}
+
+		//cm-empty - The function knows inline style or class
+		function setCssAttributes(element, cssAttribute, cssClass) {
+
+			//var splitVars = cssAttribute.split(':');
+			if (varIsEmpty(cssAttribute)) {
+				if (Array.isArray(cssAttribute)) {
+					for (i = 0; i < cssAttribute.length; i++) {
+						var cssAttributeSplit = cssAttribute[i].split(':');
+						jQuery(element).css(cssAttributeSplit[0], cssAttributeSplit[1]);
+					}
+				} else {
+					var cssAttributeSplit = cssAttribute.split(':');
+					jQuery(element).css(cssAttributeSplit[0], cssAttributeSplit[1]);
+				}
+				//jQuery(element).css(splitVars[0], splitVars[1]);
+			} else if (varIsEmpty(cssClass)) {
+				jQuery(element).addClass(cssClass);
+			}
+		}
+
+		function setCmEmptyMultiElements(element, hiddenElement) {
+			var stringArray = new Array();
+			for (i = 0; i < element.length; i++) {
+				stringArray[i] = "jQuery('" + element[i] + "').hasClass('cm_empty')";
+			}
+
+			var queryVarsArray = '';
+			for (z = 0; z < stringArray.length; z++) {
+				queryVarsArray += stringArray[z];
+				if (z < (stringArray.length - 1)) {
+					queryVarsArray += ' && ';
+				}
+			}
+
+			if (queryVarsArray) {
+				jQuery(hiddenElement).addClass('cm-templates-empty');
+			}
+		}
+
+		//check is elments empty
+		if (elements != '') {
+			//check has element cm-empty
+			if (jQuery(elements).hasClass('cm_empty')) {
+				switch (switchVariable) {
+					// Element is empty -> get element .cm-templates-empty 
+					case '1':
+						elementsAddClass(elements);
+						break;
+					case '2':
+						elementsAddClass(elements);
+						setCssAttributes(elements, cssAttribute, cssClass);
+						break;
+					case '3':
+						elementsAddClass(elements);
+						setCssAttributes(hiddenElement, cssAttribute, cssClass);
+						break;
+					case '4':
+						elementsAddClass(hiddenElement);
+						break;
+					case '5':
+						elementsAddClass(hiddenElement);
+						setCssAttributes(hiddenElement, cssAttribute, cssClass)
+						break;
+				}
+			}
+		}
+	}
+
+	setTimeout(function () {
+		//1. elements - 2. hiddenElements - 3. switchVariable - 4. cssAttribute - 5. cssValue - 6. cssClass
+		setCmEmptyForElements('.title_wrapper', '', '1', '', '', '', '');
+		setCmEmptyForElements('.title', '', '1', '', '', '', '');
+		setCmEmptyForElements('.subtitle', '', '1', '', '', '', '');
+		setCmEmptyForElements('#widgetbar_site_1', '', '1', '', '', '', '');
+		setCmEmptyForElements('#widgetbar_page_1', '', '1', '', '', '', '');
+		setCmEmptyForElements('#widgetbar_site_2', '', '1', '', '', '', '');
+		setCmEmptyForElements('#widgetbar_page_2', '', '1', '', '', '', '');
+		setCmEmptyForElements('.footer', '', '1', '', '', '', '');
+		setCmEmptyForElements('.sidebar_wrapper', '.content_main_dho', '3', 'width: 100%', '', '', '');
+		setCmEmptyForElements('#logo', '#cm_mainnavigation', '3', ['max-width: 1000px', 'padding-left: 0'], '', '', '');
+	}, 10);
+
+	setTimeout(function () {
+		/* vars */
+		var naviHeight = jQuery('#cm_navigation').height();
+
+		if (jQuery('#keyvisual').hasClass('cm_empty')) {
+			if (jQuery('#logo').hasClass('cm_empty')) {
+				var determineHeightNavi = jQuery('#cm_navigation').height();
+				jQuery('#keyvisual').css('height', determineHeightNavi);
+				jQuery('.head_wrapper').css('top', '0');
+			} else if (jQuery('#logo').not('.cm_empty')) {
+				jQuery('#keyvisual').addClass('cm-templates-keyvisual--cmEmptyModification');
+			} else if (jQuery('.title_wrapper').not('.cm_empty')) {
+				jQuery('.title_wrapper').css('margin-top', naviHeight);
+			} else if (jQuery('.content_main_dho').not('.cm_empty')) {
+				jQuery('.content_main_dho').css('margin-top', naviHeight);
+			}
+		}
+
+		checknaviHeight();
+
+		jQuery(window).resize(function () {
+			checknaviHeight();
+		});
+
+	}, 200);
+
+	(function () {
+		if (navigator.userAgent && /(iPad|iPhone|iPod)/g.test(navigator.userAgent)) {
+			var leafAnchorsList = document.querySelectorAll('#cm_navigation li:not(.cm_has_subnavigation) > a, #cm_mobile_navigation li:not(.cm_has_subnavigation) > a');
+			for (var i = 0; i < leafAnchorsList.length; i++) {
+				var touchmoved;
+				leafAnchorsList[i].addEventListener('touchend', function (ev) {
+					if (touchmoved !== true) {
+						document.location.href = ev.target.getAttribute('href');
+					}
+				});
+				leafAnchorsList[i].addEventListener('touchmove', function (ev) {
+					touchmoved = true;
+				});
+				leafAnchorsList[i].addEventListener('touchstart', function (ev) {
+					touchmoved = false;
+				});
+			}
+		}
+	})();
+});
+
+function goToByScroll(id) {
+	jQuery('html,body').animate({ scrollTop: jQuery(id).offset().top }, 'slow');
+}
