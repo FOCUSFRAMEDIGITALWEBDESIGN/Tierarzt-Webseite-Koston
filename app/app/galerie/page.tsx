@@ -32,12 +32,13 @@ export default function GaleriePage() {
     <>
       <Navbar />
       <main className="bg-surface-dark min-h-screen">
-        <section className="pt-32 pb-20">
+        {/* Responsive padding to clear fixed navbar and avoid title collision */}
+        <section className="gallery-layout-section">
           <div className="container">
             <div className="section-header text-center mb-16">
               <span className="badge">Unsere Praxis</span>
-              <h1 className="h1 mt-4 text-white">Impressionen & Galerie</h1>
-              <p className="p mt-4 mx-auto text-light" style={{ maxWidth: '700px' }}>
+              <h1 className="h1 mt-4 text-white title-responsive">Impressionen & Galerie</h1>
+              <p className="p mt-4 mx-auto text-light gallery-desc" style={{ maxWidth: '700px' }}>
                 Werfen Sie einen Blick in unsere Praxisräume und gewinnen Sie einen Eindruck von unserer täglichen Arbeit und unserer Ausstattung.
               </p>
             </div>
@@ -52,18 +53,14 @@ export default function GaleriePage() {
                 <p className="p text-white/60">Aktuell sind noch keine Bilder in der Galerie vorhanden.</p>
               </div>
             ) : (
-              <div className="gallery-grid" style={{ 
-                display: 'grid', 
-                gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', 
-                gap: '2.5rem' 
-              }}>
+              <div className="gallery-grid">
                 {images.map((img, index) => (
                   <div key={img.id} className="visible-immediately">
                     <div 
                       className="gallery-card bg-white/5 rounded-3xl border border-white/10 overflow-hidden hover-up transition-all cursor-pointer backdrop-blur-md"
                       onClick={() => setSelectedImage(img)}
                     >
-                      <div className="aspect-video relative overflow-hidden">
+                      <div className="aspect-ratio-box">
                         <img 
                           src={img.url} 
                           alt={img.description || `Galerie Bild ${index + 1}`} 
@@ -76,7 +73,7 @@ export default function GaleriePage() {
                       </div>
                       {img.description && (
                         <div className="p-5 border-t border-white/10">
-                          <p className="text-sm italic text-white/70 mb-0 leading-relaxed">{img.description}</p>
+                          <p className="description-text mb-0">{img.description}</p>
                         </div>
                       )}
                     </div>
@@ -106,6 +103,30 @@ export default function GaleriePage() {
       <Footer />
 
       <style jsx>{`
+        .gallery-layout-section {
+          padding-top: 14rem; /* Desktop default */
+          padding-bottom: 5rem;
+        }
+        .title-responsive {
+          line-height: 1.1;
+          margin-bottom: 1.5rem;
+        }
+        .gallery-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+          gap: 2.5rem;
+        }
+        .aspect-ratio-box {
+          position: relative;
+          aspect-ratio: 4 / 3;
+          overflow: hidden;
+        }
+        .description-text {
+          font-size: 0.9rem;
+          font-style: italic;
+          color: rgba(255,255,255,0.7);
+          line-height: 1.5;
+        }
         .gallery-card {
            position: relative;
         }
@@ -167,6 +188,22 @@ export default function GaleriePage() {
           text-align: center;
           color: var(--clr-text-main);
           font-weight: 500;
+        }
+
+        /* Responsive Fixes */
+        @media (max-width: 1024px) {
+          .gallery-layout-section { padding-top: 11rem; }
+          .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+        }
+        @media (max-width: 768px) {
+          .gallery-layout-section { padding-top: 9rem; }
+          .gallery-grid { grid-template-columns: 1fr; }
+          .title-responsive { font-size: clamp(2.2rem, 10vw, 3rem); }
+          .gallery-desc { font-size: 1rem; }
+        }
+        @media (max-width: 480px) {
+          .gallery-layout-section { padding-top: 8rem; }
+          .aspect-ratio-box { aspect-ratio: 1 / 1; } /* More square on mobile looks better */
         }
       `}</style>
     </>
