@@ -11,6 +11,12 @@ export default function AdminPanel() {
   const [eduTitle, setEduTitle] = useState("");
   const [eduDate, setEduDate] = useState("");
   const [eduDoctor, setEduDoctor] = useState("Florian Koston");
+  
+  const [gallery, setGallery] = useState<any[]>([]);
+  const [galleryUrl, setGalleryUrl] = useState("");
+  const [galleryDesc, setGalleryDesc] = useState("");
+  const [activeTab, setActiveTab] = useState<'edu' | 'gallery'>('edu');
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [statusMsg, setStatusMsg] = useState<{ type: 'success' | 'error', text: string } | null>(null);
 
@@ -21,6 +27,7 @@ export default function AdminPanel() {
         if (res.ok) {
           setIsAuthenticated(true);
           fetchEducations();
+          fetchGallery();
         }
       })
       .catch(() => {});
@@ -38,6 +45,7 @@ export default function AdminPanel() {
     if (res.ok) {
       setIsAuthenticated(true);
       fetchEducations();
+      fetchGallery();
     } else {
       const data = await res.json();
       setLoginError(data.error || "Falsches Passwort");
@@ -55,6 +63,12 @@ export default function AdminPanel() {
     const res = await fetch(`/api/educations?t=${Date.now()}`);
     const data = await res.json();
     setEducations(data);
+  };
+
+  const fetchGallery = async () => {
+    const res = await fetch(`/api/gallery?t=${Date.now()}`);
+    const data = await res.json();
+    setGallery(data);
   };
 
   // Educations Add
@@ -129,6 +143,41 @@ export default function AdminPanel() {
     });
   };
 
+  const addGalleryImage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!galleryUrl) return;
+
+    setIsSubmitting(true);
+    setStatusMsg(null);
+
+    try {
+      const res = await fetch("/api/gallery", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: galleryUrl, description: galleryDesc }),
+      });
+
+      if (res.ok) {
+        setGalleryUrl("");
+        setGalleryDesc("");
+        setStatusMsg({ type: 'success', text: 'Bild erfolgreich zur Galerie hinzugefügt.' });
+        fetchGallery();
+      } else {
+        setStatusMsg({ type: 'error', text: 'Fehler beim Speichern des Bildes.' });
+      }
+    } catch (err) {
+      setStatusMsg({ type: 'error', text: 'Netzwerkfehler.' });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const deleteGalleryImage = async (id: number) => {
+    if (!confirm("Bild wirklich aus der Galerie löschen?")) return;
+    await fetch(`/api/gallery/${id}`, { method: "DELETE" });
+    fetchGallery();
+  };
+
   if (!isAuthenticated) {
     return (
       <div className="admin-login">
@@ -172,8 +221,23 @@ export default function AdminPanel() {
       </header>
 
       <main className="admin-content" style={{ display: "block" }}>
-        {/* Only one central view now: Fortbildungen */}
-        <div className="admin-panel active" style={{ maxWidth: "800px", margin: "0 auto" }}>
+        <div style={{ display: "flex", justifyContent: "center", gap: "1rem", marginBottom: "2rem" }}>
+          <button 
+            onClick={() => { setActiveTab('edu'); setStatusMsg(null); }} 
+            className={activeTab === 'edu' ? 'btn-primary' : 'btn-outline-small'}
+          >
+            Fortbildungen
+          </button>
+          <button 
+            onClick={() => { setActiveTab('gallery'); setStatusMsg(null); }} 
+            className={activeTab === 'gallery' ? 'btn-primary' : 'btn-outline-small'}
+          >
+            Bildergalerie
+          </button>
+        </div>
+
+        {/* View 1: Fortbildungen */}
+        <div className={`admin-panel ${activeTab === 'edu' ? 'active' : ''}`} style={{ maxWidth: "800px", margin: "0 auto", display: activeTab === 'edu' ? 'block' : 'none' }}>
           
           <div className="admin-card">
             <h3>Neue Fortbildung hinzufügen</h3>
@@ -242,6 +306,67 @@ export default function AdminPanel() {
             </ul>
           </div>
           
+        </div>
+
+        {/* View 2: Galerie */}
+        <div className={`admin-panel ${activeTab === 'gallery' ? 'active' : ''}`} style={{ maxWidth: "800px", margin: "0 auto", display: activeTab === 'gallery' ? 'block' : 'none' }}>
+          
+          <div className="admin-card">
+            <h3>Neues Bild hinzufügen</h3>
+            {statusMsg && activeTab === 'gallery' && (
+              <div className={statusMsg.type === 'success' ? 'badge-confirmed' : 'error-msg'} style={{ marginBottom: "1rem", padding: "0.5rem 1rem", borderRadius: "8px" }}>
+                {statusMsg.text}
+              </div>
+            )}
+            <form onSubmit={addGalleryImage} style={{ display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "flex-end" }}>
+              <div className="form-group mb-0" style={{ flex: "2 1 300px" }}>
+                <label>Direkt-Link zum Bild (URL)</label>
+                <input 
+                  type="text" 
+                  value={galleryUrl} 
+                  onChange={(e) => setGalleryUrl(e.target.value)} 
+                  placeholder="https://.../bild.jpg" 
+                  className="form-control" 
+                />
+              </div>
+              <div className="form-group mb-0" style={{ flex: "1 1 200px" }}>
+                <label>Beschreibung (optional)</label>
+                <input 
+                  type="text" 
+                  value={galleryDesc} 
+                  onChange={(e) => setGalleryDesc(e.target.value)} 
+                  placeholder="Kurze Info..." 
+                  className="form-control" 
+                />
+              </div>
+              <button type="submit" disabled={isSubmitting} className="btn-primary" style={{ height: "45px", padding: "0 1.5rem", opacity: isSubmitting ? 0.7 : 1 }}>
+                {isSubmitting ? "Wird gespeichert..." : "Hinzufügen"}
+              </button>
+            </form>
+          </div>
+
+          <div className="admin-card mt-2">
+            <h3>Übersicht Galerie</h3>
+            {gallery.length === 0 && <p>Keine Bilder in der Galerie.</p>}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))", gap: "1rem", marginTop: "1rem" }}>
+              {gallery.map((img) => (
+                <div key={img.id} style={{ position: "relative", border: "1px solid #eee", borderRadius: "8px", overflow: "hidden", background: "#f9f9f9" }}>
+                  <img src={img.url} alt="Thumbnail" style={{ width: "100%", height: "100px", objectFit: "cover" }} />
+                  <div style={{ padding: "0.5rem", fontSize: "0.8rem" }}>
+                    <div style={{ fontWeight: "bold", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                      {img.description || "Keine Info"}
+                    </div>
+                    <button 
+                      onClick={() => deleteGalleryImage(img.id)}
+                      style={{ color: "var(--clr-primary)", border: "none", background: "none", cursor: "pointer", padding: "5px 0", marginTop: "5px" }}
+                    >
+                      [löschen]
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </main>
     </div>

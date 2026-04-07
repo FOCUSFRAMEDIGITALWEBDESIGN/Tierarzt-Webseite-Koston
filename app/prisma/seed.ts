@@ -73,6 +73,20 @@ async function main() {
     });
   }
 
+  // Gallery
+  const gallery = [
+    { 
+      url: 'https://tierarztinemmerich.de/.cm4all/uproc.php/0/.WhatsApp%20Bild%202025-12-05%20um%2014.53.25_6c35e697.jpg/picture-1600?_=19aeecc33c7', 
+      description: 'Handgefertigte Gebisse und moderne Ausstattung' 
+    }
+  ];
+
+  for (const img of gallery) {
+    await prisma.galleryImage.create({
+      data: img
+    });
+  }
+
   console.log('Seeding finished.');
 }
 

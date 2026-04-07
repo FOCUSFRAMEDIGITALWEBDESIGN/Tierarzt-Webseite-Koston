@@ -26,6 +26,7 @@ export default function Navbar() {
     { href: "/", label: "Startseite" },
     { href: "/leistungen", label: "Leistungen" },
     { href: "/praxis", label: "Praxis" },
+    { href: "/galerie", label: "Galerie" },
     { href: "/ueber-uns", label: "Über uns" },
     { href: "/kontakt", label: "Kontakt" },
   ];
