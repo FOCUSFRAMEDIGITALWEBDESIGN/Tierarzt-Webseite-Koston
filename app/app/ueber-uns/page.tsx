@@ -84,10 +84,10 @@ export default function UeberUnsPage() {
 
           {/* Tierarzt 2 */}
           <div
-            className="grid-2 fade-in"
-            style={{ marginBottom: "5rem", direction: "rtl" }}
+            className="grid-2 fade-in reverse-desktop"
+            style={{ marginBottom: "5rem" }}
           >
-            <div style={{ direction: "ltr" }} className="profile-card">
+            <div className="profile-card">
               <img 
                 src="https://www.tierarztinemmerich.de/.cm4all/uproc.php/0/.DSC_0299.jpg/picture-1600?_=16f9f2771c0" 
                 alt="Kerstin van Dillen" 
@@ -104,7 +104,7 @@ export default function UeberUnsPage() {
                 <li>Geriatrische Tiere (Stoffwechsel)</li>
               </ul>
             </div>
-            <div style={{ direction: "ltr" }} className="fortbildungen-box">
+            <div className="fortbildungen-box">
               <h3>Fortbildungen Kerstin van Dillen</h3>
               <ul className="timeline-list">
                 {vanDillenEdu.map((edu) => (

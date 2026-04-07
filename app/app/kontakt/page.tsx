@@ -72,6 +72,15 @@ export default function KontaktPage() {
                     </a>
                   </div>
                 </li>
+                <li>
+                  <div className="icon-wrap" style={{ background: "#E1306C", color: "white" }}>📸</div>
+                  <div>
+                    <strong>Instagram</strong>
+                    <a href="https://www.instagram.com/tierarzt_in_emmerich/" target="_blank" rel="noopener noreferrer">
+                      @tierarzt_in_emmerich
+                    </a>
+                  </div>
+                </li>
               </ul>
 
               <div

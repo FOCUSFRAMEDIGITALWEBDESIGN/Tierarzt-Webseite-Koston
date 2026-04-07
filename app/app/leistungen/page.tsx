@@ -89,8 +89,8 @@ export default function LeistungenPage() {
 
           {/* Pferde */}
           <div className="leistung-block fade-in" id="pferde">
-            <div className="grid-2 align-start" style={{ direction: "rtl" }}>
-              <div className="leistung-text" style={{ direction: "ltr" }}>
+            <div className="grid-2 reverse-desktop">
+              <div className="leistung-text">
                 <h2 className="section-title">Tierarzt für Pferde</h2>
                 <p>
                   Mit modernster Ausstattung und jahrzehntelanger Erfahrung stehen wir Ihnen als Pferdetierarzt beratend und unterstützend zur Seite. In unserer Fahrpraxis betreuen wir Ihr Pferd direkt bei Ihnen vor Ort.
@@ -130,7 +130,7 @@ export default function LeistungenPage() {
                     </a>
                 </div>
               </div>
-              <div className="image-card glow-effect sticky-img" style={{ direction: "ltr" }}>
+              <div className="image-card glow-effect sticky-img">
                 <img src="/horse.png" alt="Pferdepraxis" />
               </div>
             </div>

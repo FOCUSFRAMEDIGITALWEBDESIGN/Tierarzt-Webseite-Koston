@@ -30,10 +30,10 @@ h1,h2,h3,h4 {
   line-height: 1.1;
   color: var(--clr-primary);
 }
-h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); margin-bottom: 1rem; }
-h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 1.5rem; }
-h3 { font-size: 1.3rem; margin-bottom: 0.75rem; }
-p { font-size: 1.1rem; color: var(--clr-text-muted); margin-bottom: 1.25rem; line-height: 1.7; }
+h1 { font-size: clamp(2.2rem, 8vw, 4.5rem); margin-bottom: 1rem; }
+h2 { font-size: clamp(1.8rem, 6vw, 3rem); margin-bottom: 1.5rem; }
+h3 { font-size: clamp(1.2rem, 4vw, 1.4rem); margin-bottom: 0.75rem; }
+p { font-size: clamp(1rem, 3.5vw, 1.1rem); color: var(--clr-text-muted); margin-bottom: 1.25rem; line-height: 1.7; }
 a { text-decoration: none; color: var(--clr-primary); transition: var(--transition-smooth); }
 
 .container { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
@@ -47,9 +47,13 @@ a { text-decoration: none; color: var(--clr-primary); transition: var(--transiti
   gap: 4rem;
   align-items: center;
 }
-.align-start { align-items: start; }
-.mt-2 { margin-top: 2rem; }
-.section-divider { border: none; border-top: 1px solid rgba(0,0,0,0.06); margin: 4rem 0; }
+.grid-2.reverse-desktop { direction: rtl; }
+.grid-2.reverse-desktop > * { direction: ltr; }
+
+@media (max-width: 900px) {
+  .grid-2.reverse-desktop { direction: ltr; }
+  .grid-2.reverse-desktop > * { direction: ltr; }
+}
 
 /* --- Buttons --- */
 .btn-primary {
@@ -177,6 +181,10 @@ a { text-decoration: none; color: var(--clr-primary); transition: var(--transiti
   font-weight: 700;
   color: white;
   transition: var(--transition-smooth);
+  white-space: nowrap;
+}
+@media (max-width: 350px) {
+  .logo-text { font-size: 1.15rem; }
 }
 .navbar.scrolled .logo-text { color: var(--clr-primary); }
 .logo-sub {
@@ -227,6 +235,7 @@ a { text-decoration: none; color: var(--clr-primary); transition: var(--transiti
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   transform: scale(1.05);
 }
 .hero-overlay {
@@ -237,10 +246,11 @@ a { text-decoration: none; color: var(--clr-primary); transition: var(--transiti
 .hero-content {
   max-width: 780px;
   text-align: center;
-  padding: 0 5%;
+  padding: 0 6%;
+  z-index: 10;
 }
-.hero-content h1 { color: white; }
-.hero-content p { color: rgba(255,255,255,0.9); font-size: 1.2rem; max-width: 580px; margin: 0 auto 2.5rem; }
+.hero-content h1 { color: white; text-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+.hero-content p { color: rgba(255,255,255,0.9); font-size: clamp(1rem, 4vw, 1.25rem); max-width: 580px; margin: 0 auto 2.5rem; }
 .pill {
   display: inline-block;
   padding: 0.45rem 1.2rem;
@@ -434,20 +444,14 @@ a { text-decoration: none; color: var(--clr-primary); transition: var(--transiti
 .contact-info { padding: 3.5rem; }
 .contact-list { list-style: none; margin-top: 2.5rem; }
 .contact-list li { display: flex; gap: 1.25rem; margin-bottom: 2rem; align-items: flex-start; }
-.icon-wrap {
-  width: 46px;
-  height: 46px;
-  background: rgba(117,26,38,0.07);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.1rem;
-  flex-shrink: 0;
+.team-member img { width: 100%; border-radius: 8px; margin-bottom: 1rem; object-fit: cover; height: 320px; }
+
+@media (max-width: 700px) {
+  .team-member img { height: 400px; }
+  .profile-card { padding: 1.5rem; }
+  .fortbildungen-box { padding: 0 0.5rem; }
+  .timeline-list { padding-left: 1.25rem; }
 }
-.contact-list strong { display: block; color: var(--clr-text-main); margin-bottom: 0.2rem; font-weight: 600; }
-.contact-list a, .contact-list span { color: var(--clr-text-muted); font-size: 1rem; }
-.contact-list a:hover { color: var(--clr-primary); }
 .contact-map { min-height: 400px; background: linear-gradient(135deg, #e8e5e0, #f5f3ef); position: relative; }
 .map-placeholder {
   position: absolute;

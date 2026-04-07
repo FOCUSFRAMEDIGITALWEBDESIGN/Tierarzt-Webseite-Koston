@@ -47,16 +47,18 @@ export default function HomePage() {
               Diagnostik und optimale Behandlungsmöglichkeiten für kleine wie
               große Patienten.
             </p>
-            <div className="stats">
+            <div className="stats" style={{ display: "flex", justifyContent: "center" }}>
               <div className="stat-item">
                 <span className="stat-number">24/7</span>
                 <span className="stat-label">Notdienst Erreichbarkeit</span>
               </div>
             </div>
             <br />
-            <Link href="/ueber-uns" className="btn-secondary">
-              Lernen Sie unser Team kennen →
-            </Link>
+            <div className="text-center" style={{ marginTop: "1rem" }}>
+              <Link href="/ueber-uns" className="btn-secondary">
+                Lernen Sie unser Team kennen →
+              </Link>
+            </div>
           </div>
           <div className="image-card glow-effect">
             <img src="/small_animal.png" alt="Tierarzt untersucht Hund" />
@@ -110,6 +112,26 @@ export default function HomePage() {
       </section>
 
 
+
+
+      {/* Instagram SECTION */}
+      <section className="section-padding" style={{ background: "linear-gradient(rgba(117,26,38,0.02), rgba(117,26,38,0.08))" }}>
+        <div className="container text-center">
+          <div className="pill" style={{ background: "rgba(117,26,38,0.1)", color: "var(--clr-primary)" }}>Instagram</div>
+          <h2 className="section-title">Folgen Sie uns</h2>
+          <p className="section-subtitle">
+            Aktuelle Einblicke in unseren Praxisalltag und hilfreiche Tipps für Ihre Tiere finden Sie auf unserem Instagram-Profil.
+          </p>
+          
+          <div className="team-grid" style={{ maxWidth: "800px", margin: "2rem auto" }}>
+             <a href="https://www.instagram.com/tierarzt_in_emmerich/" target="_blank" rel="noopener noreferrer" className="service-card" style={{ padding: "3rem", display: "flex", flexDirection: "column", alignItems: "center", gap: "1.5rem", width: "100%" }}>
+                <span style={{ fontSize: "3rem" }}>📸</span>
+                <span style={{ fontSize: "1.4rem", fontWeight: "700", color: "var(--clr-primary)" }}>@tierarzt_in_emmerich</span>
+                <span className="btn-primary">Profil ansehen</span>
+             </a>
+          </div>
+        </div>
+      </section>
 
       {/* Contact Strip */}
       <section className="section-padding bg-light">

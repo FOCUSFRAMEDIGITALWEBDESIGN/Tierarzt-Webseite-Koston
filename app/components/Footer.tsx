@@ -12,10 +12,13 @@ export default function Footer() {
           </p>
         </div>
         <div>
-          <div className="footer-links">
+          <div className="footer-links" style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             <Link href="/kontakt">Kontakt</Link>
             <Link href="/datenschutz">Datenschutz</Link>
             <Link href="/impressum">Impressum</Link>
+            <a href="https://www.instagram.com/tierarzt_in_emmerich/" target="_blank" rel="noopener noreferrer" style={{ color: "var(--clr-gold)", fontWeight: "600", marginTop: "0.25rem" }}>
+              📸 Instagram
+            </a>
           </div>
         </div>
       </div>
