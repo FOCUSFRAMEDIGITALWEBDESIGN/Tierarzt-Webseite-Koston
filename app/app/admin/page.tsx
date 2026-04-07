@@ -15,6 +15,7 @@ export default function AdminPanel() {
   const [gallery, setGallery] = useState<any[]>([]);
   const [galleryUrl, setGalleryUrl] = useState("");
   const [galleryDesc, setGalleryDesc] = useState("");
+  const [gallerySort, setGallerySort] = useState("0");
   const [activeTab, setActiveTab] = useState<'edu' | 'gallery'>('edu');
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -154,12 +155,13 @@ export default function AdminPanel() {
       const res = await fetch("/api/gallery", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: galleryUrl, description: galleryDesc }),
+        body: JSON.stringify({ url: galleryUrl, description: galleryDesc, sortOrder: gallerySort }),
       });
 
       if (res.ok) {
         setGalleryUrl("");
         setGalleryDesc("");
+        setGallerySort("0");
         setStatusMsg({ type: 'success', text: 'Bild erfolgreich zur Galerie hinzugefügt.' });
         fetchGallery();
       } else {
@@ -339,7 +341,17 @@ export default function AdminPanel() {
                   className="form-control" 
                 />
               </div>
-              <button type="submit" disabled={isSubmitting} className="btn-primary" style={{ height: "45px", padding: "0 1.5rem", opacity: isSubmitting ? 0.7 : 1 }}>
+              <div className="form-group mb-0" style={{ flex: "0 1 100px" }}>
+                <label>Prio (0-99)</label>
+                <input 
+                  type="number" 
+                  value={gallerySort} 
+                  onChange={(e) => setGallerySort(e.target.value)} 
+                  className="form-control" 
+                  pattern="[0-9]*"
+                />
+              </div>
+              <button type="submit" disabled={isSubmitting} className="btn-primary" style={{ height: "45px", padding: "0.15rem 1.5rem", opacity: isSubmitting ? 0.7 : 1 }}>
                 {isSubmitting ? "Wird gespeichert..." : "Hinzufügen"}
               </button>
             </form>
@@ -354,7 +366,7 @@ export default function AdminPanel() {
                   <img src={img.url} alt="Thumbnail" style={{ width: "100%", height: "100px", objectFit: "cover" }} />
                   <div style={{ padding: "0.5rem", fontSize: "0.8rem" }}>
                     <div style={{ fontWeight: "bold", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                      {img.description || "Keine Info"}
+                      #{img.sortOrder} - {img.description || "Keine Info"}
                     </div>
                     <button 
                       onClick={() => deleteGalleryImage(img.id)}

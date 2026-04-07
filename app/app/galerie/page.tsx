@@ -13,6 +13,7 @@ interface GalleryImage {
 export default function GaleriePage() {
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
 
   useEffect(() => {
     fetch('/api/gallery')
@@ -54,12 +55,15 @@ export default function GaleriePage() {
           ) : (
             <div className="gallery-grid" style={{ 
               display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', 
-              gap: '2rem' 
+              gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', 
+              gap: '1.5rem' 
             }}>
               {images.map((img, index) => (
                 <div key={img.id} className="fade-in">
-                  <div className="gallery-card bg-white rounded-2xl shadow-sm overflow-hidden hover-up transition-all">
+                  <div 
+                    className="gallery-card bg-white rounded-2xl shadow-sm overflow-hidden hover-up transition-all cursor-pointer"
+                    onClick={() => setSelectedImage(img)}
+                  >
                     <div className="aspect-video relative overflow-hidden">
                       <img 
                         src={img.url} 
@@ -67,6 +71,9 @@ export default function GaleriePage() {
                         className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
                         loading="lazy"
                       />
+                      <div className="gallery-overlay">
+                        <span>🔍 Vergrößern</span>
+                      </div>
                     </div>
                     {img.description && (
                       <div className="p-4 border-t border-gray-100">
@@ -80,14 +87,86 @@ export default function GaleriePage() {
           )}
         </section>
       </main>
+
+      {/* Lightbox Modal */}
+      {selectedImage && (
+        <div className="lightbox-modal" onClick={() => setSelectedImage(null)}>
+          <button className="lightbox-close" onClick={() => setSelectedImage(null)}>&times;</button>
+          <div className="lightbox-content" onClick={e => e.stopPropagation()}>
+            <img src={selectedImage.url} alt={selectedImage.description || "Galerie Ansicht"} />
+            {selectedImage.description && (
+              <div className="lightbox-caption">
+                <p>{selectedImage.description}</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       <Footer />
 
       <style jsx>{`
-        .gallery-card:hover {
-          box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        .gallery-card {
+           position: relative;
         }
-        .gallery-card img:hover {
-          transform: scale(1.05);
+        .gallery-overlay {
+          position: absolute;
+          inset: 0;
+          background: rgba(117, 26, 38, 0.4);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+          color: white;
+          font-weight: 600;
+        }
+        .gallery-card:hover .gallery-overlay {
+          opacity: 1;
+        }
+        .lightbox-modal {
+          position: fixed;
+          inset: 0;
+          background: rgba(0,0,0,0.9);
+          z-index: 2000;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 2rem;
+          backdrop-filter: blur(8px);
+        }
+        .lightbox-content {
+          max-width: 90vw;
+          max-height: 85vh;
+          position: relative;
+          background: white;
+          padding: 0.5rem;
+          border-radius: 12px;
+          box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        .lightbox-content img {
+          max-width: 100%;
+          max-height: 75vh;
+          display: block;
+          object-fit: contain;
+          border-radius: 8px;
+        }
+        .lightbox-close {
+          position: absolute;
+          top: 2rem;
+          right: 2rem;
+          background: none;
+          border: none;
+          color: white;
+          font-size: 3rem;
+          cursor: pointer;
+          line-height: 1;
+        }
+        .lightbox-caption {
+          padding: 1rem;
+          text-align: center;
+          color: var(--clr-text-main);
+          font-weight: 500;
         }
       `}</style>
     </>

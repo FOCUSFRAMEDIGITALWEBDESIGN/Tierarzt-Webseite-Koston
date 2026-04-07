@@ -27,6 +27,7 @@ export async function POST(req: Request) {
       data: {
         url: body.url,
         description: body.description || "",
+        sortOrder: body.sortOrder ? parseInt(body.sortOrder) : 0,
       },
     });
     return NextResponse.json(image, { status: 201 });
