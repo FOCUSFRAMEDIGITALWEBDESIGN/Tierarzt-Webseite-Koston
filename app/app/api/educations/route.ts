@@ -12,14 +12,21 @@ export async function GET() {
 
 // POST add education
 export async function POST(req: Request) {
-  const body = await req.json();
-  const edu = await prisma.education.create({
-    data: {
-      title: body.title,
-      date: body.date,
-      doctor: body.doctor,
-      category: body.category || "Allgemein",
-    },
-  });
-  return NextResponse.json(edu, { status: 201 });
+  try {
+    const body = await req.json();
+    console.log("POST /api/educations - Body:", body);
+    
+    const edu = await prisma.education.create({
+      data: {
+        title: body.title,
+        date: body.date,
+        doctor: body.doctor,
+        category: body.category || "Allgemein",
+      },
+    });
+    return NextResponse.json(edu, { status: 201 });
+  } catch (error: any) {
+    console.error("Error creating education:", error);
+    return NextResponse.json({ error: error.message || "Internal Server Error" }, { status: 500 });
+  }
 }

@@ -29,6 +29,7 @@ export async function middleware(request: NextRequest) {
       }
       
       if (!validSession) {
+        console.warn(`Unauthorized ${request.method} request to ${request.nextUrl.pathname}`);
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
       }
     }

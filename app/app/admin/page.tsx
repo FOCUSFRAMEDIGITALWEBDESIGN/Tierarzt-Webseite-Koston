@@ -11,6 +11,8 @@ export default function AdminPanel() {
   const [eduTitle, setEduTitle] = useState("");
   const [eduDate, setEduDate] = useState("");
   const [eduDoctor, setEduDoctor] = useState("Florian Koston");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [statusMsg, setStatusMsg] = useState<{ type: 'success' | 'error', text: string } | null>(null);
 
   // Authentication check
   useEffect(() => {
@@ -60,15 +62,32 @@ export default function AdminPanel() {
     e.preventDefault();
     if (!eduTitle || !eduDate) return;
 
-    await fetch("/api/educations", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title: eduTitle, date: eduDate, doctor: eduDoctor }),
-    });
+    setIsSubmitting(true);
+    setStatusMsg(null);
 
-    setEduTitle("");
-    setEduDate("");
-    fetchEducations();
+    try {
+      const res = await fetch("/api/educations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: eduTitle, date: eduDate, doctor: eduDoctor }),
+      });
+
+      if (res.ok) {
+        setEduTitle("");
+        setEduDate("");
+        setStatusMsg({ type: 'success', text: 'Fortbildung erfolgreich hinzugefügt.' });
+        fetchEducations();
+      } else {
+        const errorData = await res.json();
+        const msg = errorData.error || "Fehler beim Speichern.";
+        setStatusMsg({ type: 'error', text: `Fehler: ${msg}` });
+      }
+    } catch (err) {
+      console.error(err);
+      setStatusMsg({ type: 'error', text: 'Netzwerkfehler beim Speichern.' });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Educations Delete
@@ -158,6 +177,11 @@ export default function AdminPanel() {
           
           <div className="admin-card">
             <h3>Neue Fortbildung hinzufügen</h3>
+            {statusMsg && (
+              <div className={statusMsg.type === 'success' ? 'badge-confirmed' : 'error-msg'} style={{ marginBottom: "1rem", padding: "0.5rem 1rem", borderRadius: "8px" }}>
+                {statusMsg.text}
+              </div>
+            )}
             <form onSubmit={addEducation} style={{ display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "flex-end" }}>
               <div className="form-group mb-0" style={{ flex: "1 1 200px" }}>
                 <label>Arzt/Ärztin</label>
@@ -174,7 +198,9 @@ export default function AdminPanel() {
                 <label>Titel der Fortbildung</label>
                 <input type="text" value={eduTitle} onChange={(e) => setEduTitle(e.target.value)} placeholder="Bezeichnung..." className="form-control" />
               </div>
-              <button type="submit" className="btn-primary" style={{ height: "45px", padding: "0 1.5rem" }}>Hinzufügen</button>
+              <button type="submit" disabled={isSubmitting} className="btn-primary" style={{ height: "45px", padding: "0 1.5rem", opacity: isSubmitting ? 0.7 : 1 }}>
+                {isSubmitting ? "Wird gespeichert..." : "Hinzufügen"}
+              </button>
             </form>
           </div>
 
