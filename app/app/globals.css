@@ -876,9 +876,10 @@ footer {
   backdrop-filter: blur(4px);
   z-index: 1050;
   opacity: 0;
+  pointer-events: none;
   transition: opacity 0.3s ease;
 }
-.mobile-overlay.open { opacity: 1; }
+.mobile-overlay.open { opacity: 1; pointer-events: auto; }
 
 /* ========================================
    MOBILE DRAWER
@@ -895,10 +896,11 @@ footer {
   flex-direction: column;
   padding: 2rem 1.75rem;
   transform: translateX(100%);
+  pointer-events: none;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: -20px 0 60px rgba(0,0,0,0.15);
 }
-.mobile-menu.open { transform: translateX(0); }
+.mobile-menu.open { transform: translateX(0); pointer-events: auto; }
 .mobile-menu-header {
   display: flex;
   flex-direction: column;
