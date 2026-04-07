@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { upload } from "@vercel/blob/client";
 
 export default function AdminPanel() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -15,7 +14,6 @@ export default function AdminPanel() {
   
   const [gallery, setGallery] = useState<any[]>([]);
   const [galleryUrl, setGalleryUrl] = useState("");
-  const [galleryFile, setGalleryFile] = useState<File | null>(null);
   const [galleryDesc, setGalleryDesc] = useState("");
   const [gallerySort, setGallerySort] = useState("0");
   const [activeTab, setActiveTab] = useState<'edu' | 'gallery'>('edu');
@@ -147,46 +145,30 @@ export default function AdminPanel() {
   };
 
   const addGalleryImage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!galleryUrl) return;
+
     setIsSubmitting(true);
     setStatusMsg(null);
 
     try {
-      let finalUrl = galleryUrl;
-
-      // Real file upload if selected
-      if (galleryFile) {
-        const newBlob = await upload(galleryFile.name, galleryFile, {
-          access: 'public',
-          handleUploadUrl: '/api/gallery/upload',
-        });
-        finalUrl = newBlob.url;
-      }
-
-      if (!finalUrl) {
-        setStatusMsg({ type: 'error', text: 'Bitte ein Bild auswählen oder eine URL eingeben.' });
-        setIsSubmitting(false);
-        return;
-      }
-
       const res = await fetch("/api/gallery", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: finalUrl, description: galleryDesc, sortOrder: gallerySort }),
+        body: JSON.stringify({ url: galleryUrl, description: galleryDesc, sortOrder: gallerySort }),
       });
 
       if (res.ok) {
         setGalleryUrl("");
-        setGalleryFile(null);
         setGalleryDesc("");
         setGallerySort("0");
         setStatusMsg({ type: 'success', text: 'Bild erfolgreich zur Galerie hinzugefügt.' });
         fetchGallery();
       } else {
-        setStatusMsg({ type: 'error', text: 'Fehler beim Speichern des Bildes in der Datenbank.' });
+        setStatusMsg({ type: 'error', text: 'Fehler beim Speichern des Bildes.' });
       }
     } catch (err) {
-      console.error(err);
-      setStatusMsg({ type: 'error', text: 'Upload fehlgeschlagen. Prüfe deine Vercel Blob Einstellungen.' });
+      setStatusMsg({ type: 'error', text: 'Netzwerkfehler.' });
     } finally {
       setIsSubmitting(false);
     }
@@ -340,34 +322,14 @@ export default function AdminPanel() {
             )}
             <form onSubmit={addGalleryImage} style={{ display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "flex-end" }}>
               <div className="form-group mb-0" style={{ flex: "2 1 300px" }}>
-                <label>Bild auswählen (Direkt-Upload)</label>
-                <div style={{ display: "flex", gap: "0.5rem" }}>
-                  <input 
-                    type="file" 
-                    accept="image/*"
-                    onChange={(e) => {
-                      if (e.target.files?.[0]) {
-                        setGalleryFile(e.target.files[0]);
-                        setGalleryUrl(""); // Clear URL if file is picked
-                      }
-                    }}
-                    className="form-control" 
-                    style={{ flex: 1 }}
-                  />
-                </div>
-                <small style={{ marginTop: "0.5rem", display: "block", color: "var(--clr-text-muted)" }}>
-                  Oder alternativ einen Link einfügen: 
-                  <input 
-                    type="text" 
-                    value={galleryUrl} 
-                    onChange={(e) => {
-                      setGalleryUrl(e.target.value);
-                      if (e.target.value) setGalleryFile(null); // Clear file if URL is typed
-                    }}
-                    placeholder="https://.../bild.jpg"
-                    style={{ border: "none", borderBottom: "1px solid #ccc", padding: "2px 5px", width: "100%", fontSize: "0.85rem", background: "transparent" }}
-                  />
-                </small>
+                <label>Direkt-Link zum Bild (URL)</label>
+                <input 
+                  type="text" 
+                  value={galleryUrl} 
+                  onChange={(e) => setGalleryUrl(e.target.value)} 
+                  placeholder="https://.../bild.jpg" 
+                  className="form-control" 
+                />
               </div>
               <div className="form-group mb-0" style={{ flex: "1 1 200px" }}>
                 <label>Beschreibung (optional)</label>

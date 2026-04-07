@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
-import CookieBanner from "@/components/CookieBanner";
 
 export const metadata: Metadata = {
   title: "Tierarztpraxis Koston & van Dillen | Tierarzt Emmerich",
@@ -19,7 +18,6 @@ export default function RootLayout({
       <body>
         <AnimateOnScroll />
         {children}
-        <CookieBanner />
       </body>
     </html>
   );
