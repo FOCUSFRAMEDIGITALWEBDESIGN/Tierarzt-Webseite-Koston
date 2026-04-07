@@ -31,60 +31,60 @@ export default function GaleriePage() {
   return (
     <>
       <Navbar />
-      <main className="pt-24 pb-16">
-        <section className="container section-padding">
-          <div className="fade-in">
-            <div className="section-header text-center mb-12">
+      <main className="bg-surface-dark min-h-screen">
+        <section className="pt-32 pb-20">
+          <div className="container">
+            <div className="section-header text-center mb-16">
               <span className="badge">Unsere Praxis</span>
-              <h1 className="h1 mt-4">Impressionen & Galerie</h1>
-              <p className="p mt-4 mx-auto" style={{ maxWidth: '700px' }}>
+              <h1 className="h1 mt-4 text-white">Impressionen & Galerie</h1>
+              <p className="p mt-4 mx-auto text-light" style={{ maxWidth: '700px' }}>
                 Werfen Sie einen Blick in unsere Praxisräume und gewinnen Sie einen Eindruck von unserer täglichen Arbeit und unserer Ausstattung.
               </p>
             </div>
-          </div>
 
-          {loading ? (
-            <div className="text-center py-20">
-              <div className="loading-spinner mx-auto mb-4"></div>
-              <p>Bilder werden geladen...</p>
-            </div>
-          ) : images.length === 0 ? (
-            <div className="text-center py-20 bg-light rounded-2xl">
-              <p className="p">Aktuell sind noch keine Bilder in der Galerie vorhanden.</p>
-            </div>
-          ) : (
-            <div className="gallery-grid" style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', 
-              gap: '1.5rem' 
-            }}>
-              {images.map((img, index) => (
-                <div key={img.id} className="fade-in">
-                  <div 
-                    className="gallery-card bg-white rounded-2xl shadow-sm overflow-hidden hover-up transition-all cursor-pointer"
-                    onClick={() => setSelectedImage(img)}
-                  >
-                    <div className="aspect-video relative overflow-hidden">
-                      <img 
-                        src={img.url} 
-                        alt={img.description || `Galerie Bild ${index + 1}`} 
-                        className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-                        loading="lazy"
-                      />
-                      <div className="gallery-overlay">
-                        <span>🔍 Vergrößern</span>
+            {loading ? (
+              <div className="text-center py-20">
+                <div className="loading-spinner mx-auto mb-4"></div>
+                <p className="text-white">Bilder werden geladen...</p>
+              </div>
+            ) : images.length === 0 ? (
+              <div className="text-center py-24 bg-white/5 rounded-3xl border border-white/10 backdrop-blur-sm">
+                <p className="p text-white/60">Aktuell sind noch keine Bilder in der Galerie vorhanden.</p>
+              </div>
+            ) : (
+              <div className="gallery-grid" style={{ 
+                display: 'grid', 
+                gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', 
+                gap: '2.5rem' 
+              }}>
+                {images.map((img, index) => (
+                  <div key={img.id} className="visible-immediately">
+                    <div 
+                      className="gallery-card bg-white/5 rounded-3xl border border-white/10 overflow-hidden hover-up transition-all cursor-pointer backdrop-blur-md"
+                      onClick={() => setSelectedImage(img)}
+                    >
+                      <div className="aspect-video relative overflow-hidden">
+                        <img 
+                          src={img.url} 
+                          alt={img.description || `Galerie Bild ${index + 1}`} 
+                          className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
+                          loading="lazy"
+                        />
+                        <div className="gallery-overlay">
+                          <span>🔍 Vergrößern</span>
+                        </div>
                       </div>
+                      {img.description && (
+                        <div className="p-5 border-t border-white/10">
+                          <p className="text-sm italic text-white/70 mb-0 leading-relaxed">{img.description}</p>
+                        </div>
+                      )}
                     </div>
-                    {img.description && (
-                      <div className="p-4 border-t border-gray-100">
-                        <p className="text-sm italic text-gray-600 mb-0">{img.description}</p>
-                      </div>
-                    )}
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
+                ))}
+              </div>
+            )}
+          </div>
         </section>
       </main>
 
