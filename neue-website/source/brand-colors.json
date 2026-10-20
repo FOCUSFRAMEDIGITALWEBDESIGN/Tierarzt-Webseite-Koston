@@ -1,0 +1,27 @@
+{
+  "reference_url": "https://www.tierarztinemmerich.de/",
+  "stylesheet_url": "https://www.tierarztinemmerich.de/.cm4all/handler.php/vars.css?v=20260814154549",
+  "retrieved": "2026-10-20",
+  "original_colors": {
+    "bordeaux": "#982A2C",
+    "petrol": "#51857C",
+    "turquoise": "#8EC3C5",
+    "text": "#212121",
+    "white": "#FFFFFF",
+    "light_gray": "#F8F8F8"
+  },
+  "source_roles": {
+    "bordeaux": "Original navigation, site title, sidebar and footer text",
+    "petrol": "Original subtitle and inline main headings",
+    "turquoise": "Original inline introduction text",
+    "white": "Original main content background",
+    "light_gray": "Original navigation, title, sidebar and footer backgrounds"
+  },
+  "adapted_colors": {
+    "muted_text": "#626262",
+    "small_petrol_text": "#3B6860",
+    "soft_petrol_background": "#EDF5F5",
+    "soft_bordeaux_background": "#F8EDED"
+  },
+  "note": "Success, draft and error indicators retain distinct functional colors."
+}
