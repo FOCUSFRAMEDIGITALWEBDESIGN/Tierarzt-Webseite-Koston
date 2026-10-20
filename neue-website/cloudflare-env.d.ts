@@ -6,6 +6,7 @@ declare namespace Cloudflare {
     ADMIN_CSRF_SECRET?: string;
     ADMIN_PASSWORD_PEPPER?: string;
     SITE_ORIGIN?: string;
+    SITE_ADDITIONAL_ORIGINS?: string;
     BUCKET?: R2Bucket;
   }
 }

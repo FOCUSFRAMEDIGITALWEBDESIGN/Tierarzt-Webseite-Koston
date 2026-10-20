@@ -23,7 +23,13 @@ export async function verifyCsrfToken(token:string|null,user:ChatGPTUser,now=Dat
   return data.u===user.userId&&typeof data.n==='string'&&data.n.length>=20&&Number.isSafeInteger(data.e)&&data.e>now&&data.e<=now+TOKEN_LIFETIME;
  }catch{return false;}
 }
-export function hasTrustedOrigin(request:Request){const configured=env.SITE_ORIGIN;if(!configured)return false;const origin=request.headers.get('origin');return origin===configured&&new URL(request.url).origin===configured&&request.headers.get('sec-fetch-site')!=='cross-site';}
+export function hasTrustedOrigin(request:Request){
+ const configured=env.SITE_ORIGIN;if(!configured)return false;
+ const origin=request.headers.get('origin');
+ if(!origin||new URL(request.url).origin!==origin||request.headers.get('sec-fetch-site')==='cross-site')return false;
+ const allowed=[configured,...(env.SITE_ADDITIONAL_ORIGINS||'').split(',').map(value=>value.trim()).filter(Boolean)];
+ return allowed.includes(origin);
+}
 export async function readBoundedBytes(request:Request,maxBytes:number){
  const claimed=Number(request.headers.get('content-length')||0);if(claimed>maxBytes)throw new BodyLimitError();
  if(!request.body)return new Uint8Array();

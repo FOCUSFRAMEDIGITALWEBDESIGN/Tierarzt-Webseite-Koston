@@ -36,6 +36,29 @@ await check('Cross-origin and missing-origin writes are rejected',async()=>{asse
 await check('Real calendar dates and input bounds are validated',()=>{assert.throws(()=>app.validation.validDate('2026-02-30'));assert.throws(()=>app.validation.validDate('2026-13'));assert.equal(app.validation.validDate('2024-02-29'),'2024-02-29');assert.equal(app.validation.validDate('2026'),'2026');assert.throws(()=>app.validation.str('x'.repeat(301),'Titel',300,true));});
 let trainingId;
 const form={title:'Persistenzprüfung',person:'Kerstin van Dillen',category:'Zahnmedizin',date:'2026-10',provider:'Test',location:'Online',end_date:'',description:'Unveröffentlichter Test',published:false};
+const customDomains=['https://tierarztinemmerich.com','https://www.tierarztinemmerich.com'];
+const domainRequest=(host,claimed=host,extra={})=>new Request(host+'/api/trainings',{method:'POST',headers:{origin:claimed,'content-type':'application/json','x-csrf-token':csrfToken,cookie,...extra},body:JSON.stringify(form)});
+await check('Explicit custom domains allow authenticated same-origin admin writes',async()=>{
+ globalThis.__testEnv.SITE_ADDITIONAL_ORIGINS=customDomains.join(', ');
+ try{for(const host of customDomains){const result=await app.trainings.POST(domainRequest(host));assert.equal(result.status,201);const id=(await result.json()).id;assert.equal((await app.training.DELETE(new Request(host+'/api/trainings/'+id,{method:'DELETE',headers:{origin:host,'x-csrf-token':csrfToken,cookie}}),context(id))).status,200);}}
+ finally{delete globalThis.__testEnv.SITE_ADDITIONAL_ORIGINS;}
+});
+await check('Custom domains retain account, password and CSRF requirements',async()=>{
+ globalThis.__testEnv.SITE_ADDITIONAL_ORIGINS=customDomains.join(',');
+ try{const host=customDomains[0];const noPassword=domainRequest(host);noPassword.headers.delete('cookie');assert.equal((await app.trainings.POST(noPassword)).status,401);const noCsrf=domainRequest(host);noCsrf.headers.delete('x-csrf-token');assert.equal((await app.trainings.POST(noCsrf)).status,403);globalThis.__testUser=null;assert.equal((await app.trainings.POST(domainRequest(host))).status,401);globalThis.__testUser={...owner,userId:'another-account'};assert.equal((await app.trainings.POST(domainRequest(host))).status,403);}
+ finally{globalThis.__testUser=owner;delete globalThis.__testEnv.SITE_ADDITIONAL_ORIGINS;}
+});
+await check('Custom origin approval never permits cross-origin or wildcard requests',async()=>{
+ globalThis.__testEnv.SITE_ADDITIONAL_ORIGINS=customDomains.join(',');
+ try{assert.equal((await app.trainings.POST(domainRequest(customDomains[0],customDomains[1]))).status,403);assert.equal((await app.trainings.POST(domainRequest(customDomains[0],origin))).status,403);for(const host of ['https://evil.test','https://other.tierarztinemmerich.com','https://tierarztinemmerich.com.evil.test','http://tierarztinemmerich.com'])assert.equal((await app.trainings.POST(domainRequest(host))).status,403);assert.equal((await app.trainings.POST(domainRequest(customDomains[0],customDomains[0],{'sec-fetch-site':'cross-site'}))).status,403);}
+ finally{delete globalThis.__testEnv.SITE_ADDITIONAL_ORIGINS;}
+});
+await check('Custom origins require explicit configuration and a primary origin',async()=>{
+ assert.equal((await app.trainings.POST(domainRequest(customDomains[0]))).status,403);
+ const saved=globalThis.__testEnv.SITE_ORIGIN;globalThis.__testEnv.SITE_ADDITIONAL_ORIGINS=customDomains.join(',');delete globalThis.__testEnv.SITE_ORIGIN;
+ try{assert.equal((await app.trainings.POST(domainRequest(customDomains[0]))).status,403);}
+ finally{globalThis.__testEnv.SITE_ORIGIN=saved;delete globalThis.__testEnv.SITE_ADDITIONAL_ORIGINS;}
+});
 await check('Creating a draft persists it without publishing it',async()=>{const result=await app.trainings.POST(req('/api/trainings','POST',form));assert.equal(result.status,201);const data=await result.json();trainingId=data.id;assert.equal(sql.prepare('SELECT published FROM trainings WHERE id=?').get(trainingId).published,0);assert(!(await app.server.readContent()).trainings.find(t=>t.id===trainingId));});
 await check('Editing and publishing is visible to public readers',async()=>{const result=await app.training.PUT(req('/api/trainings/'+trainingId,'PUT',{...form,published:true,title:'Veröffentlicht'}),context(trainingId));assert.equal(result.status,200);assert.equal((await app.server.readContent()).trainings.find(t=>t.id===trainingId).title,'Veröffentlicht');});
 await check('Deleting persists and never reseeds removed content',async()=>{assert.equal((await app.training.DELETE(req('/api/trainings/'+trainingId,'DELETE'),context(trainingId))).status,200);const existing='original-1';await app.training.DELETE(req('/api/trainings/'+existing,'DELETE'),context(existing));await app.server.initializeOwner(owner);assert(!(await app.server.readContent()).trainings.find(t=>t.id===existing));});
