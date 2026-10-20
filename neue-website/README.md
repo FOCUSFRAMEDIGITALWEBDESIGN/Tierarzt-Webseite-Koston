@@ -33,7 +33,7 @@ Das Kontaktformular öffnet ein lokales Mailprogramm. Es sendet keine E-Mail aut
 
 `source/reference-content.json` enthält die abgerufenen Inhalte aller zehn relevanten Unterseiten; `source/image-sources.json` dokumentiert die ursprünglichen Bildadressen. Vorhandene Praxisfotos und das Zeichen aus dem ursprünglichen Logo werden lokal ausgeliefert. Für Ida Reintjes enthielt die bisherige Website lediglich ein generisches Stockbild. Hier erscheint deshalb eine neutrale Initialen-Kachel, bis ein eigenes Foto hochgeladen wird.
 
-Schriften: DM Serif Display und Manrope, lokal gespeicherte Google-Fonts-Dateien (Open Font License). Das Design übernimmt die Farben der bisherigen Praxiswebsite: Bordeauxrot (#982A2C), Weiß, Hellgrau (#F8F8F8), Petrol (#51857C) und Türkis (#8EC3C5). Kleine Texte verwenden kontrastreichere Grautöne und eine dunklere Petrol-Abstufung. Die Palette gilt auch für den Adminbereich und das Favicon. Große Serifenschrift, klare Telefonlinks und der auf Mobilgeräten fixierte Terminanruf bleiben erhalten. Die Farbquelle ist in `source/brand-colors.json` dokumentiert.
+Schriften: DM Serif Display und Manrope, lokal gespeicherte Google-Fonts-Dateien (Open Font License). Das Design verwendet Bordeauxrot (#982A2C), Weiß und Hellgrau (#F8F8F8) aus der bisherigen Praxiswebsite. Auf Wunsch wurden die grünen Petrol- und Türkisakzente durch neutrale Grautöne (#707070 und #A3A3A3) ersetzt. Kleine Akzenttexte verwenden das kontrastreiche Dunkelgrau #626262. Die Palette gilt auch für den Adminbereich und das Favicon. Große Serifenschrift, klare Telefonlinks und der auf Mobilgeräten fixierte Terminanruf bleiben erhalten. Die Farbquelle ist in `source/brand-colors.json` dokumentiert.
 
 ## Prüfen und bauen
 

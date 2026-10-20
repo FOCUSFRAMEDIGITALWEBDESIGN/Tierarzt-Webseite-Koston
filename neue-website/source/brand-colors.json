@@ -19,9 +19,13 @@
   },
   "adapted_colors": {
     "muted_text": "#626262",
-    "small_petrol_text": "#3B6860",
-    "soft_petrol_background": "#EDF5F5",
+    "accent": "#707070",
+    "small_accent_text": "#626262",
+    "light_accent": "#A3A3A3",
+    "soft_accent_background": "#F1F1F1",
+    "accent_line": "#D7D7D7",
     "soft_bordeaux_background": "#F8EDED"
   },
-  "note": "Success, draft and error indicators retain distinct functional colors."
+  "note": "The gray accent palette also applies to the admin area, success indicators and favicon. Status labels remain explicit; draft and error indicators retain their functional colors.",
+  "requested_adjustment": "The user requested neutral gray highlights instead of green. Original petrol and turquoise are retained above for provenance only."
 }
