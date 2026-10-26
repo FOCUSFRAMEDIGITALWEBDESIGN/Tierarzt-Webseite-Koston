@@ -13,6 +13,8 @@ Ein Klick auf das Logo oben links öffnet die Praxisverwaltung. Dort sind das fr
 - `/admin`: Fortbildungen anlegen, bearbeiten, als Entwurf speichern, veröffentlichen oder löschen; Bilder hochladen, mit Alternativtext versehen, zuordnen, ausblenden oder entfernen.
 - `/impressum` und `/datenschutz`: übernommene Geschäftsangaben und an diese Website angepasste Hinweise. Die alte Datenschutzerklärung bleibt verlinkt, da ihre Facebook-/Strato-Texte nicht diese neue Architektur beschreiben. Der nicht mehr aktuelle EU-ODR-Link der alten Website wurde nicht als aktuelle Schlichtungsmöglichkeit neu veröffentlicht.
 
+Die Startseite nennt Kleintiermedizin und Pferdemedizin in Emmerich gut lesbar im oberen Bereich. Seitentitel, Beschreibung, Open-Graph-Angaben und strukturierte Praxisdaten ergänzen die lokalen Suchbegriffe. Impressum und Datenschutz sind im Footer und im Mobilmenü erreichbar. Die offiziellen Facebook- und Instagram-Profile sind an beiden Stellen als einfache externe Links eingebunden, ohne Social-Media-Widgets. Ihre Quellen stehen in `source/social-profiles.json`.
+
 ## Speicherung und Zugriff
 
 Sites stellt D1 unter `DB` und R2 unter `BUCKET` bereit. Das Schema liegt in `db/schema.ts`, die schema-only Migration unter `drizzle/`. Die ursprünglichen Inhalte sind als Fallback in `lib/content.ts` enthalten und werden beim ersten Adminbesuch einmalig in einer D1-Transaktion gespeichert. Die `content_initialized`-Markierung verhindert das erneute Einfügen gelöschter Einträge.

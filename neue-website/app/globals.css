@@ -50,3 +50,27 @@
 .admin-account>.icon-button{margin-left:auto;width:28px;height:28px;color:var(--muted)}
 .password-settings{max-width:610px}.password-settings .password-settings-heading{justify-content:flex-start;gap:14px}.password-settings-heading>svg{color:var(--accent)}.password-settings-heading p{font-size:9px;margin-top:6px;color:var(--muted)}.password-settings .password-form{padding:22px 26px 29px}
 @media(max-width:600px){.password-page{padding-top:37px}.password-page-brand{margin-bottom:28px}.password-page-brand .brand strong{font-size:22px}.password-heading{padding:25px 25px 0}.password-heading h1{font-size:34px}.password-heading>p{font-size:10px}.password-icon{width:47px;height:47px;margin-bottom:20px}.password-form{padding:23px 25px 25px}.password-form input{font-size:16px;letter-spacing:0}.password-form .password-visibility{font-size:9px}.password-session-note{font-size:8px}.password-foot{font-size:7px}.password-heading .eyebrow{font-size:7px}.admin-top-actions{gap:12px}.admin-top-actions .text-link,.admin-top-actions a{font-size:7px;gap:5px}.admin-top-actions svg{width:12px}.admin-top>div{gap:6px}.password-settings .password-form{padding:20px}.password-settings .password-settings-heading{padding:17px}.password-settings-heading p{font-size:8px}}
+
+/* Local practice details and public links */
+.hero-note{max-width:440px;align-items:flex-start;gap:11px;font-size:13px;font-weight:600;line-height:1.7;color:var(--accent-text);margin-top:25px}
+.hero-note>svg{margin-top:3px;color:var(--brand)}.hero-note-location{white-space:nowrap}
+.nav-extras{display:none}
+.social-links{display:flex;align-items:center;flex-wrap:wrap;gap:9px}
+.social-links a{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:9px 12px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--brand);font-size:11px;font-weight:600;line-height:1.5;white-space:nowrap;transition:background .2s,border-color .2s}
+.social-links a:hover{background:var(--brand-soft);border-color:var(--brand-line);color:var(--brand-hover)}
+.legal-links{display:flex;flex-wrap:wrap;gap:20px}.legal-links a{display:inline-flex;align-items:center;min-height:44px;text-decoration:underline;text-underline-offset:4px}
+.footer-bottom{font-size:11px;line-height:1.7;gap:24px}
+.footer-bottom>span{font-size:10px}
+.footer-bottom .footer-navigation{display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:12px 24px}
+@media(max-width:1000px){.footer-bottom{align-items:flex-start}.footer-bottom .footer-navigation{justify-content:flex-start}}
+@media(max-width:850px){
+.navlinks.is-open{max-height:calc(100vh - 80px);max-height:calc(100svh - 80px);overflow-y:auto}
+.nav-extras{display:block;padding-top:6px}.nav-extras .legal-links{flex-direction:column;gap:0}
+.nav-extras .social-links{margin-top:16px}
+.navlinks .social-links a{padding:9px 12px;border:1px solid var(--line);font-size:11px}
+}
+@media(max-width:600px){
+.hero-note{max-width:340px;font-size:12px;line-height:1.75;margin-top:22px}
+.footer-bottom{font-size:12px;gap:15px}.footer-bottom .footer-navigation{width:100%;flex-direction:column;align-items:flex-start;gap:9px}
+.footer-navigation .legal-links{gap:26px}
+}

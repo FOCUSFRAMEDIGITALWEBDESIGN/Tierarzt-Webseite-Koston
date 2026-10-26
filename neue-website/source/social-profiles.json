@@ -1,0 +1,18 @@
+{
+  "verified_on": "2026-10-26",
+  "profiles": [
+    {
+      "platform": "Facebook",
+      "url": "https://www.facebook.com/tierarztinemmerich/",
+      "display_name": "Tierarztpraxis Koston & van Dillen | Emmerich"
+    },
+    {
+      "platform": "Instagram",
+      "url": "https://www.instagram.com/tierarzt_in_emmerich/",
+      "display_name": "Tierarztpraxis Koston & van Dillen GbR",
+      "handle": "tierarzt_in_emmerich"
+    }
+  ],
+  "verification": "Matched primary profile search results by practice name and location; both profiles are also linked by the practice listing below. Direct profile fetching was restricted by the social platforms.",
+  "corroborating_source": "https://www.spatz.vet/de/tierarzt/tierarztpraxis-koston-van-dillen-gbr"
+}

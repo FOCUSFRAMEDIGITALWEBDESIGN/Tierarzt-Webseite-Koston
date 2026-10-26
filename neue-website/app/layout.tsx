@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
 import './globals.css';
-export const metadata:Metadata={metadataBase:new URL('https://koston-van-dillen.hey1233767.chatgpt.site'),title:{default:'Koston & van Dillen · Tierarztpraxis in Emmerich',template:'%s · Koston & van Dillen'},description:'Persönliche Tiermedizin für Kleintiere und Pferde in Emmerich am Rhein. Lernen Sie unser Team und unsere Leistungen kennen. Bremerweg 61 · 02822 9818244.',icons:{icon:'/favicon.svg'}};
+import { PUBLIC_SITE_ORIGIN, PRACTICE_DESCRIPTION } from '@/lib/site';
+export const metadata:Metadata={metadataBase:new URL(PUBLIC_SITE_ORIGIN),title:{default:'Tierarzt in Emmerich · Koston & van Dillen',template:'%s · Koston & van Dillen'},description:PRACTICE_DESCRIPTION,icons:{icon:'/favicon.svg'}};
 export default function RootLayout({children}:{children:React.ReactNode}){return <html lang="de"><body>{children}</body></html>;}
